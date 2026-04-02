@@ -51,6 +51,12 @@ Default preprocessing parameters:
 - AdaptiveAvgPool1d head
 - dropout-regularized MLP classifier
 
+The model uses a fixed architecture:
+- conv channels: 32, 64, 128, 256
+- kernel sizes: 7, 5, 5, 3
+- FC hidden units: 128
+- dropout: 0.30, then 0.20
+
 ## Environment Setup
 
 PowerShell (from project root):

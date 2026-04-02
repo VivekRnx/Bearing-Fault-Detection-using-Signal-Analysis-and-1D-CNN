@@ -40,7 +40,7 @@ def parse_args() -> argparse.Namespace:
 
     parser.add_argument("--epochs", type=int, default=35)
     parser.add_argument("--batch-size", type=int, default=256)
-    parser.add_argument("--learning-rate", type=float, default=1e-3)
+    parser.add_argument("--learning-rate", type=float, default=8e-4)
     parser.add_argument("--weight-decay", type=float, default=1e-4)
     parser.add_argument("--num-workers", type=int, default=2)
     parser.add_argument(
@@ -107,7 +107,7 @@ def run_epoch(
     criterion: nn.Module,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None = None,
-    scaler: torch.cuda.amp.GradScaler | None = None,
+    scaler: torch.amp.GradScaler | None = None,
 ) -> tuple[float, float, np.ndarray, np.ndarray]:
     is_train = optimizer is not None
     model.train(is_train)

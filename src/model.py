@@ -8,6 +8,7 @@ class Bearing1DCNN(nn.Module):
     def __init__(self, input_channels: int = 3, num_classes: int = 4) -> None:
         super().__init__()
 
+        # Fixed production architecture.
         self.features = nn.Sequential(
             nn.Conv1d(input_channels, 32, kernel_size=7, padding=3),
             nn.BatchNorm1d(32),
@@ -21,8 +22,8 @@ class Bearing1DCNN(nn.Module):
             nn.BatchNorm1d(128),
             nn.ReLU(inplace=True),
             nn.MaxPool1d(kernel_size=2),
-            nn.Conv1d(128, 128, kernel_size=3, padding=1),
-            nn.BatchNorm1d(128),
+            nn.Conv1d(128, 256, kernel_size=3, padding=1),
+            nn.BatchNorm1d(256),
             nn.ReLU(inplace=True),
             nn.AdaptiveAvgPool1d(1),
         )
@@ -30,10 +31,10 @@ class Bearing1DCNN(nn.Module):
         self.classifier = nn.Sequential(
             nn.Flatten(),
             nn.Dropout(0.30),
-            nn.Linear(128, 64),
+            nn.Linear(256, 128),
             nn.ReLU(inplace=True),
             nn.Dropout(0.20),
-            nn.Linear(64, num_classes),
+            nn.Linear(128, num_classes),
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
