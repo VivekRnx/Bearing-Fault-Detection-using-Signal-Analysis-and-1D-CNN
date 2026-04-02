@@ -58,13 +58,19 @@ python src/train.py --device auto --epochs 35 --batch-size 256
 Useful overrides:
 
 ```powershell
-python src/train.py --device cuda --epochs 50 --learning-rate 5e-4 --window-size 2048 --step-size 1024
+python src/train.py --device cuda --epochs 50 --learning-rate 5e-4 --window-size 2048 --step-size 1024 --pin-memory
 ```
 
 If you want to force regeneration of dataset cache:
 
 ```powershell
 python src/train.py --rebuild-cache
+```
+
+To disable class-weighted loss (enabled by default):
+
+```powershell
+python src/train.py --no-class-weights
 ```
 
 ## Outputs
@@ -80,4 +86,6 @@ Training creates the `artifacts/` folder with:
 ## Notes
 
 - The script also reads `feature_time_48k_2048_load_1.csv` to log dataset-level feature summary and label counts for sanity checking.
+- Class-weighted cross-entropy is enabled by default to handle the natural class imbalance after windowing raw signals.
+- On some Windows systems, keeping `--pin-memory` off is more stable. Enable it only if your system runs smoothly with it.
 - The classifier is trained on features generated from raw vibration windows to satisfy signal-analysis-driven diagnosis.

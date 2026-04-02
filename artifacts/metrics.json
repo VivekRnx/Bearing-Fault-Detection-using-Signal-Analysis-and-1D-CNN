@@ -1,0 +1,163 @@
+{
+  "device": {
+    "selected": "cuda",
+    "cuda_available": true,
+    "cuda_device_count": 1,
+    "cuda_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "torch_version": "2.11.0+cu128"
+  },
+  "dataset": {
+    "num_samples": 4630,
+    "input_shape": [
+      3,
+      2048
+    ],
+    "window_size": 2048,
+    "step_size": 1024,
+    "sampling_rate": 48000,
+    "raw_dir": "raw",
+    "class_distribution": {
+      "healthy": 471,
+      "inner_race_fault": 1316,
+      "outer_race_fault": 1422,
+      "ball_fault": 1421
+    },
+    "per_file_windows": {
+      "B007_1_123.mat": 474,
+      "B014_1_190.mat": 473,
+      "B021_1_227.mat": 474,
+      "IR007_1_110.mat": 473,
+      "IR014_1_175.mat": 371,
+      "IR021_1_214.mat": 472,
+      "OR007_6_1_136.mat": 474,
+      "OR014_6_1_202.mat": 472,
+      "OR021_6_1_239.mat": 476,
+      "Time_Normal_1_098.mat": 471
+    },
+    "cache_source": "artifacts\\dataset_cache.npz"
+  },
+  "splits": {
+    "train": 3240,
+    "val": 695,
+    "test": 695
+  },
+  "best_val_accuracy": 0.3064748201438849,
+  "test_loss": 1.3962373978800053,
+  "test_accuracy": 0.3064748201438849,
+  "history": {
+    "train_loss": [
+      1.035145189732681
+    ],
+    "train_acc": [
+      0.45185185185185184
+    ],
+    "val_loss": [
+      1.394718921441826
+    ],
+    "val_acc": [
+      0.3064748201438849
+    ]
+  },
+  "class_weights": [
+    2.4620060790273555,
+    0.8794788273615635,
+    0.8140703517587939,
+    0.8140703517587939
+  ],
+  "classification_report": {
+    "healthy": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 71.0
+    },
+    "inner_race_fault": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 198.0
+    },
+    "outer_race_fault": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 213.0
+    },
+    "ball_fault": {
+      "precision": 0.3064748201438849,
+      "recall": 1.0,
+      "f1-score": 0.46916299559471364,
+      "support": 213.0
+    },
+    "accuracy": 0.3064748201438849,
+    "macro avg": {
+      "precision": 0.07661870503597122,
+      "recall": 0.25,
+      "f1-score": 0.11729074889867841,
+      "support": 695.0
+    },
+    "weighted avg": {
+      "precision": 0.09392681538222658,
+      "recall": 0.3064748201438849,
+      "f1-score": 0.14378664469305613,
+      "support": 695.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      0,
+      0,
+      0,
+      71
+    ],
+    [
+      0,
+      0,
+      0,
+      198
+    ],
+    [
+      0,
+      0,
+      0,
+      213
+    ],
+    [
+      0,
+      0,
+      0,
+      213
+    ]
+  ],
+  "csv_summary": {
+    "path": "feature_time_48k_2048_load_1.csv",
+    "shape": [
+      2300,
+      10
+    ],
+    "columns": [
+      "max",
+      "min",
+      "mean",
+      "sd",
+      "rms",
+      "skewness",
+      "kurtosis",
+      "crest",
+      "form",
+      "fault"
+    ],
+    "fault_counts": {
+      "Ball_007_1": 230,
+      "Ball_014_1": 230,
+      "Ball_021_1": 230,
+      "IR_007_1": 230,
+      "IR_014_1": 230,
+      "IR_021_1": 230,
+      "OR_007_6_1": 230,
+      "OR_014_6_1": 230,
+      "OR_021_6_1": 230,
+      "Normal_1": 230
+    }
+  }
+}

@@ -51,6 +51,11 @@ def parse_args() -> argparse.Namespace:
 
     parser.add_argument("--test-size", type=float, default=0.15)
     parser.add_argument("--val-size", type=float, default=0.15)
+    parser.add_argument(
+        "--no-class-weights",
+        action="store_true",
+        help="Disable class-weighted loss.",
+    )
 
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--device", type=str, choices=["auto", "cuda", "cpu"], default="auto")
@@ -284,7 +289,16 @@ def main() -> None:
     )
 
     model = Bearing1DCNN(input_channels=X_train.shape[1], num_classes=len(class_names)).to(device)
-    criterion = nn.CrossEntropyLoss()
+
+    class_weight_values: list[float] | None = None
+    if args.no_class_weights:
+        criterion = nn.CrossEntropyLoss()
+    else:
+        class_counts = np.bincount(y_train, minlength=len(class_names)).astype(np.float64)
+        class_weights = class_counts.sum() / (len(class_names) * np.maximum(class_counts, 1.0))
+        class_weight_values = [float(w) for w in class_weights.tolist()]
+        weight_tensor = torch.tensor(class_weights, dtype=torch.float32, device=device)
+        criterion = nn.CrossEntropyLoss(weight=weight_tensor)
     optimizer = torch.optim.AdamW(
         model.parameters(),
         lr=args.learning_rate,
@@ -420,6 +434,7 @@ def main() -> None:
         "test_loss": float(test_loss),
         "test_accuracy": float(test_acc),
         "history": history,
+        "class_weights": class_weight_values,
         "classification_report": report_dict,
         "confusion_matrix": cm.tolist(),
         "csv_summary": csv_summary,

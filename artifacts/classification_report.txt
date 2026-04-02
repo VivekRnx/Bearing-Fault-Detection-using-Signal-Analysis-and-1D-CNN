@@ -1,0 +1,10 @@
+                  precision    recall  f1-score   support
+
+         healthy     0.0000    0.0000    0.0000        71
+inner_race_fault     0.0000    0.0000    0.0000       198
+outer_race_fault     0.0000    0.0000    0.0000       213
+      ball_fault     0.3065    1.0000    0.4692       213
+
+        accuracy                         0.3065       695
+       macro avg     0.0766    0.2500    0.1173       695
+    weighted avg     0.0939    0.3065    0.1438       695
