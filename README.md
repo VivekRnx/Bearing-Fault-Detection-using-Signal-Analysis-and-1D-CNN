@@ -1,1 +1,0 @@
-# Bearing-Fault-Detection-using-Signal-Analysis-and-1D-CNN
