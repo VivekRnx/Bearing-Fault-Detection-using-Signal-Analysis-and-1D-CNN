@@ -43,6 +43,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--learning-rate", type=float, default=1e-3)
     parser.add_argument("--weight-decay", type=float, default=1e-4)
     parser.add_argument("--num-workers", type=int, default=2)
+    parser.add_argument(
+        "--pin-memory",
+        action="store_true",
+        help="Enable DataLoader pin_memory (optional on Windows).",
+    )
 
     parser.add_argument("--test-size", type=float, default=0.15)
     parser.add_argument("--val-size", type=float, default=0.15)
@@ -252,7 +257,7 @@ def main() -> None:
     X_val, y_val = splits["val"]
     X_test, y_test = splits["test"]
 
-    pin_memory = device.type == "cuda"
+    pin_memory = bool(args.pin_memory and device.type == "cuda")
     train_loader = make_dataloader(
         X_train,
         y_train,
@@ -291,7 +296,7 @@ def main() -> None:
         factor=0.5,
         patience=4,
     )
-    scaler = torch.cuda.amp.GradScaler(enabled=(device.type == "cuda"))
+    scaler = torch.amp.GradScaler("cuda", enabled=(device.type == "cuda"))
 
     history: dict[str, list[float]] = {
         "train_loss": [],
@@ -302,6 +307,11 @@ def main() -> None:
 
     best_val_acc = -1.0
     best_checkpoint_path = args.output_dir / "best_model.pt"
+
+    serializable_args = {
+        key: str(value) if isinstance(value, Path) else value
+        for key, value in vars(args).items()
+    }
 
     for epoch in range(1, args.epochs + 1):
         train_loss, train_acc, _, _ = run_epoch(
@@ -345,12 +355,12 @@ def main() -> None:
                     "input_channels": int(X_train.shape[1]),
                     "window_size": int(X_train.shape[2]),
                     "best_val_acc": float(best_val_acc),
-                    "args": vars(args),
+                    "args": serializable_args,
                 },
                 best_checkpoint_path,
             )
 
-    checkpoint = torch.load(best_checkpoint_path, map_location=device)
+    checkpoint = torch.load(best_checkpoint_path, map_location=device, weights_only=False)
     model.load_state_dict(checkpoint["model_state"])
     model.eval()
 
